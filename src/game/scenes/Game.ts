@@ -1,40 +1,68 @@
 import { Scene } from 'phaser';
+import { Marble } from '../objects/Marble';
+import { MARBLE_COLORS, MARBLE_RADIUS } from '../consts';
+import { StartChunk } from '../chunks/StartChunk';
 
-export class Game extends Scene {
-    camera: Phaser.Cameras.Scene2D.Camera;
-    background: Phaser.GameObjects.Image;
-    gameText: Phaser.GameObjects.Text;
+/**
+ * 메인 게임 화면 클래스
+ */
+export class GameScene extends Scene {
+    private _participants: Marble[];
 
     constructor() {
-        super('Game');
+        super('game');
+        this._participants = [];
     }
 
     create() {
-        this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+        this.cameras.main.setBackgroundColor(0xeeeeee);
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
+        // 시작 청크 생성
+        const startChunk = new StartChunk({
+            scene: this,
+            participants: this._participants,
+        });
 
-        this.gameText = this.add
-            .text(
-                512,
-                384,
-                'Make something fun!\nand share it with us:\nsupport@phaser.io',
-                {
-                    fontFamily: 'Arial Black',
-                    fontSize: 38,
-                    color: '#ffffff',
-                    stroke: '#000000',
-                    strokeThickness: 8,
-                    align: 'center',
-                }
-            )
-            .setOrigin(0.5)
-            .setDepth(100);
+        const _participants = this.registry.get('participants');
+        const _gap = 10;
+        const _availableAreaWidth =
+            (MARBLE_RADIUS * 2 + _gap) * _participants.length - _gap;
+        const _marbleColorSet = new Set(MARBLE_COLORS);
+
+        // 참가자 구슬 생성
+        _participants.forEach((name: string, index: number) => {
+            // 랜덤 색상 선택
+            const _color =
+                Array.from(_marbleColorSet)[
+                    Math.floor(Math.random() * _marbleColorSet.size)
+                ];
+            _marbleColorSet.delete(_color);
+
+            const _marble = new Marble({
+                scene: this,
+                x:
+                    this.game.canvas.width / 2 -
+                    _availableAreaWidth / 2 +
+                    MARBLE_RADIUS +
+                    (MARBLE_RADIUS * 2 + _gap) * index,
+                y: startChunk.background.y,
+                radius: MARBLE_RADIUS,
+                color: _color,
+                name,
+            });
+            this._participants.push(_marble);
+        });
+
+        this.physics.pause();
+        this.time.delayedCall(1000, () => {
+            this.physics.resume();
+        });
     }
 
-    changeScene() {
-        this.scene.start('GameOver');
+    update() {
+        // 참가자 이름 위치 업데이트
+        this._participants.forEach(participant =>
+            participant.updateNamePosition()
+        );
     }
 }

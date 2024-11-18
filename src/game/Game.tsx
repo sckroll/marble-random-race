@@ -1,40 +1,58 @@
 import { useEffect, useRef } from 'react';
 import { AUTO } from 'phaser';
+import { PreloaderScene } from './scenes/Preload';
+import { LoaderScene } from './scenes/Loader';
+import { GameScene } from './scenes/Game';
 
-import { Boot } from './scenes/Boot';
-import { GameOver } from './scenes/GameOver';
-import { Game as MainGame } from './scenes/Game';
-import { MainMenu } from './scenes/MainMenu';
-import { Preloader } from './scenes/Preloader';
-
+/** Phaser 게임 설정 객체 */
 const config: Phaser.Types.Core.GameConfig = {
     type: AUTO,
-
-    // width: 1024,
-    // height: 768,
-    // parent: 'game-container',
-    // backgroundColor: '#000000',
+    // scale: {
+    //     mode: Phaser.Scale.FIT,
+    //     autoCenter: Phaser.Scale.CENTER_BOTH,
+    // },
+    backgroundColor: '#000000',
+    physics: {
+        arcade: {
+            gravity: { x: 0, y: 1000 },
+            debug: true,
+        },
+        default: 'arcade',
+    },
 };
 
-export function Game() {
+/** 게임 화면 컴포넌트 props 타입 */
+type GameProps = {
+    participants: string[];
+};
+
+/**
+ * 게임 화면 컴포넌트
+ */
+export function Game({ participants }: GameProps) {
     const gameContainerRef = useRef<HTMLDivElement>(null);
     const gameRef = useRef<Phaser.Game | null>(null);
 
     useEffect(() => {
-        // if (gameRef.current) {
-        //     return;
-        // }
-
-        gameRef.current = new Phaser.Game({
-            ...config,
-            parent: gameContainerRef.current?.id,
-            scene: [Boot, Preloader, MainMenu, MainGame, GameOver],
-        });
+        if (!gameRef.current) {
+            gameRef.current = new Phaser.Game({
+                ...config,
+                parent: gameContainerRef.current?.id,
+                width: document.body.clientWidth,
+                height: document.body.clientHeight,
+                scene: [
+                    new PreloaderScene({ participants }),
+                    new LoaderScene(),
+                    new GameScene(),
+                ],
+            });
+            return;
+        }
 
         return () => {
             gameRef.current?.destroy(true);
         };
-    }, []);
+    }, [participants]);
 
     return <div ref={gameContainerRef} id='game-container'></div>;
 }

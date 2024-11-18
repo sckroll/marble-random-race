@@ -19,6 +19,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
     padding: 4rem;
 }
 
@@ -27,4 +28,19 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.participantList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }
