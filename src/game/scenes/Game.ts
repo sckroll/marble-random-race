@@ -8,11 +8,15 @@ import { EndChunk } from '../chunks/EndChunk';
  * 메인 게임 화면 클래스
  */
 export class GameScene extends Scene {
+    /** 참가자 구슬 리스트 */
     private _participants: Marble[];
+    /** 레이스가 시작되었는지 여부 */
+    private _isRaceStarted: boolean;
 
     constructor() {
         super('game');
         this._participants = [];
+        this._isRaceStarted = false;
     }
 
     create() {
@@ -60,13 +64,27 @@ export class GameScene extends Scene {
             this._participants.push(_marble);
         });
 
+        // 처음 카메라는 구슬이 모여있는 지점 중앙에 고정
+        this.cameras.main.startFollow(
+            this._participants[Math.floor(this._participants.length / 2)]
+        );
+
         this.physics.pause();
         this.time.delayedCall(1000, () => {
+            this._isRaceStarted = true;
             this.physics.resume();
         });
     }
 
     update() {
+        // 카메라 위치 업데이트
+        // TODO: 당첨 순위에 해당하는 구슬에 포커스를 맞추도록 수정
+        if (this._isRaceStarted) {
+            this.cameras.main.startFollow(
+                this._participants[Math.floor(this._participants.length / 2)]
+            );
+        }
+
         // 참가자 이름 위치 업데이트
         this._participants.forEach(participant =>
             participant.updateNamePosition()
