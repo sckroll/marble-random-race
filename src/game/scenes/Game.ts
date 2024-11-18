@@ -2,6 +2,7 @@ import { Scene } from 'phaser';
 import { Marble } from '../objects/Marble';
 import { MARBLE_COLORS, MARBLE_RADIUS } from '../consts';
 import { StartChunk } from '../chunks/StartChunk';
+import { EndChunk } from '../chunks/EndChunk';
 
 /**
  * 메인 게임 화면 클래스
@@ -21,6 +22,12 @@ export class GameScene extends Scene {
         const startChunk = new StartChunk({
             scene: this,
             participants: this._participants,
+            y: 0,
+        });
+        const endChunk = new EndChunk({
+            scene: this,
+            participants: this._participants,
+            y: startChunk.background.height,
         });
 
         const _participants = this.registry.get('participants');
