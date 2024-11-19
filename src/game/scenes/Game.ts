@@ -3,6 +3,7 @@ import { Marble } from '../objects/Marble';
 import { MARBLE_COLORS, MARBLE_RADIUS } from '../consts';
 import { StartChunk } from '../chunks/StartChunk';
 import { EndChunk } from '../chunks/EndChunk';
+import { TestChunk } from '../chunks/TestChunk';
 
 /**
  * 메인 게임 화면 클래스
@@ -28,10 +29,15 @@ export class GameScene extends Scene {
             participants: this._participants,
             y: 0,
         });
-        const endChunk = new EndChunk({
+        const testChunk = new TestChunk({
             scene: this,
             participants: this._participants,
             y: startChunk.background.height,
+        });
+        const endChunk = new EndChunk({
+            scene: this,
+            participants: this._participants,
+            y: startChunk.background.height + testChunk.background.height,
         });
 
         const _participants = this.registry.get('participants');

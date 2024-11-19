@@ -58,18 +58,18 @@ export class StartChunk extends GameObjects.Container {
      * 청크의 벽을 렌더링하는 메소드
      */
     private _renderWalls() {
-        let _wall = this._scene.add.rectangle(
+        const _ceil = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2,
             this._y + common.wallThickness / 2,
             startChunk.width,
             common.wallThickness,
             0xeeeeee
         );
-        this._scene.physics.add.existing(_wall, true);
-        this._scene.physics.add.collider(_wall, this._participants);
-        this.add(_wall);
+        this._scene.physics.add.existing(_ceil, true);
+        this._scene.physics.add.collider(_ceil, this._participants);
+        this.add(_ceil);
 
-        _wall = this._scene.add.rectangle(
+        const _leftWall = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2 -
                 startChunk.width / 2 +
                 common.wallThickness / 2,
@@ -78,11 +78,11 @@ export class StartChunk extends GameObjects.Container {
             startChunk.height,
             0xeeeeee
         );
-        this._scene.physics.add.existing(_wall, true);
-        this._scene.physics.add.collider(_wall, this._participants);
-        this.add(_wall);
+        this._scene.physics.add.existing(_leftWall, true);
+        this._scene.physics.add.collider(_leftWall, this._participants);
+        this.add(_leftWall);
 
-        _wall = this._scene.add.rectangle(
+        const _rightWall = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2 +
                 startChunk.width / 2 -
                 common.wallThickness / 2,
@@ -91,8 +91,8 @@ export class StartChunk extends GameObjects.Container {
             startChunk.height,
             0xeeeeee
         );
-        this._scene.physics.add.existing(_wall, true);
-        this._scene.physics.add.collider(_wall, this._participants);
-        this.add(_wall);
+        this._scene.physics.add.existing(_rightWall, true);
+        this._scene.physics.add.collider(_rightWall, this._participants);
+        this.add(_rightWall);
     }
 }

@@ -19,4 +19,10 @@ export const chunkConfig = {
         /** 종료(도착) 청크 높이 */
         height: 500,
     },
+    testChunk: {
+        /** 테스트 청크 너비 */
+        width: 700,
+        /** 테스트 청크 높이 */
+        height: 500,
+    },
 };

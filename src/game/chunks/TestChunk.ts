@@ -3,10 +3,9 @@ import { chunkConfig } from './consts';
 import { Marble } from '../objects/Marble';
 
 /** 청크 설정 객체 */
-const { common, endChunk } = chunkConfig;
+const { common, testChunk } = chunkConfig;
 
-/** 레이스 도착 청크 생성자 타입 */
-type EndChunkProps = {
+type TestChunkProps = {
     /** 현재 게임 화면 클래스 */
     scene: Scene;
     /** 참가자 구슬 리스트 */
@@ -15,10 +14,7 @@ type EndChunkProps = {
     y: number;
 };
 
-/**
- * 레이스 도착 청크 클래스
- */
-export class EndChunk extends GameObjects.Container {
+export class TestChunk extends GameObjects.Container {
     /** 현재 게임 화면 클래스 */
     private _scene: Scene;
     /** 참가자 구슬 리스트 */
@@ -28,7 +24,7 @@ export class EndChunk extends GameObjects.Container {
     /** 구슬이 지나갈 수 있는 영역의 배경 */
     background: GameObjects.Rectangle;
 
-    constructor({ scene, participants, y }: EndChunkProps) {
+    constructor({ scene, participants, y }: TestChunkProps) {
         super(scene);
         scene.add.existing(this);
 
@@ -38,6 +34,7 @@ export class EndChunk extends GameObjects.Container {
 
         this._renderBackground();
         this._renderWalls();
+        this._renderObstacles();
     }
 
     /**
@@ -46,9 +43,9 @@ export class EndChunk extends GameObjects.Container {
     private _renderBackground() {
         this.background = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2,
-            this._y + endChunk.height / 2,
-            endChunk.width,
-            endChunk.height,
+            this._y + testChunk.height / 2,
+            testChunk.width,
+            testChunk.height,
             0xaaaaaa
         );
         this.add(this.background);
@@ -58,24 +55,13 @@ export class EndChunk extends GameObjects.Container {
      * 청크의 벽을 렌더링하는 메소드
      */
     private _renderWalls() {
-        const _floor = this._scene.add.rectangle(
-            this._scene.game.canvas.width / 2,
-            this._y + endChunk.height - common.wallThickness / 2,
-            endChunk.width,
-            common.wallThickness,
-            0xeeeeee
-        );
-        this._scene.physics.add.existing(_floor, true);
-        this._scene.physics.add.collider(_floor, this._participants);
-        this.add(_floor);
-
         const _leftWall = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2 -
-                endChunk.width / 2 +
+                testChunk.width / 2 +
                 common.wallThickness / 2,
-            this._y + endChunk.height / 2,
+            this._y + testChunk.height / 2,
             common.wallThickness,
-            endChunk.height,
+            testChunk.height,
             0xeeeeee
         );
         this._scene.physics.add.existing(_leftWall, true);
@@ -84,15 +70,32 @@ export class EndChunk extends GameObjects.Container {
 
         const _rightWall = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2 +
-                endChunk.width / 2 -
+                testChunk.width / 2 -
                 common.wallThickness / 2,
-            this._y + endChunk.height / 2,
+            this._y + testChunk.height / 2,
             common.wallThickness,
-            endChunk.height,
+            testChunk.height,
             0xeeeeee
         );
         this._scene.physics.add.existing(_rightWall, true);
         this._scene.physics.add.collider(_rightWall, this._participants);
         this.add(_rightWall);
+    }
+
+    /**
+     * 청크의 장애물을 렌더링하는 메소드
+     */
+    private _renderObstacles() {
+        const _obstacle = this._scene.add.rectangle(
+            this._scene.game.canvas.width / 2,
+            this._y + testChunk.height / 2,
+            100,
+            100,
+            0xeeeeee
+        );
+        _obstacle.setAngle(45);
+        this._scene.physics.add.existing(_obstacle, true).setAngle(45);
+        this._scene.physics.add.collider(_obstacle, this._participants);
+        this.add(_obstacle);
     }
 }
