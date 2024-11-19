@@ -39,8 +39,7 @@ export class Marble extends GameObjects.Arc {
 
         const _body = this.body as Phaser.Physics.Arcade.Body;
         _body.setCircle(MARBLE_RADIUS);
-        _body.setCollideWorldBounds(true);
-        _body.setBounce(0.75);
+        _body.setBounce(0.5);
     }
 
     updateNamePosition() {
