@@ -75,10 +75,10 @@ export class GameScene extends Scene {
             this._participants[Math.floor(this._participants.length / 2)]
         );
 
-        this.physics.pause();
+        this.matter.pause();
         this.time.delayedCall(1000, () => {
             this._isRaceStarted = true;
-            this.physics.resume();
+            this.matter.resume();
         });
     }
 

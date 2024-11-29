@@ -13,11 +13,11 @@ const config: Phaser.Types.Core.GameConfig = {
     // },
     backgroundColor: '#000000',
     physics: {
-        arcade: {
-            gravity: { x: 0, y: 2000 },
+        matter: {
+            gravity: { x: 0, y: 1 },
             debug: true,
         },
-        default: 'arcade',
+        default: 'matter',
     },
 };
 
