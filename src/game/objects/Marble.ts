@@ -35,11 +35,11 @@ export class Marble extends GameObjects.Arc {
             .setOrigin(0.5, 1);
 
         scene.add.existing(this);
-        scene.matter.add.gameObject(this);
-
-        const _body = this.body as MatterJS.BodyType;
-        _body.circleRadius = MARBLE_RADIUS;
-        _body.restitution = 1;
+        scene.matter.add.gameObject(this, {
+            circleRadius: MARBLE_RADIUS,
+            restitution: 1,
+            shape: 'circle',
+        });
     }
 
     updateNamePosition() {

@@ -65,10 +65,11 @@ export class EndChunk extends GameObjects.Container {
             common.wallThickness,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(_floor, { isStatic: true }, true);
-        this._scene.matter.world.on('collisionactive', (event, bodyA, bodyB) => {
-            
-        });
+        this._scene.matter.add.gameObject(
+            _floor,
+            { isStatic: true, restitution: 1 },
+            true
+        );
         // this._scene.physics.add.existing(_floor, true);
         // this._scene.physics.add.collider(_floor, this._participants);
         // this.add(_floor);
@@ -82,7 +83,11 @@ export class EndChunk extends GameObjects.Container {
             endChunk.height,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(_leftWall, { isStatic: true }, true);
+        this._scene.matter.add.gameObject(
+            _leftWall,
+            { isStatic: true, restitution: 1 },
+            true
+        );
         // this._scene.physics.add.existing(_leftWall, true);
         // this._scene.physics.add.collider(_leftWall, this._participants);
         // this.add(_leftWall);
@@ -96,7 +101,11 @@ export class EndChunk extends GameObjects.Container {
             endChunk.height,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(_rightWall, { isStatic: true }, true);
+        this._scene.matter.add.gameObject(
+            _rightWall,
+            { isStatic: true, restitution: 1 },
+            true
+        );
         // this._scene.physics.add.existing(_rightWall, true);
         // this._scene.physics.add.collider(_rightWall, this._participants);
         // this.add(_rightWall);

@@ -64,7 +64,11 @@ export class TestChunk extends GameObjects.Container {
             testChunk.height,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(_leftWall, { isStatic: true }, true);
+        this._scene.matter.add.gameObject(
+            _leftWall,
+            { isStatic: true, restitution: 1 },
+            true
+        );
         // this._scene.physics.add.existing(_leftWall, true);
         // this._scene.physics.add.collider(_leftWall, this._participants);
         // this.add(_leftWall);
@@ -78,7 +82,11 @@ export class TestChunk extends GameObjects.Container {
             testChunk.height,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(_rightWall, { isStatic: true }, true);
+        this._scene.matter.add.gameObject(
+            _rightWall,
+            { isStatic: true, restitution: 1 },
+            true
+        );
         // this._scene.physics.add.existing(_rightWall, true);
         // this._scene.physics.add.collider(_rightWall, this._participants);
         // this.add(_rightWall);
@@ -97,7 +105,7 @@ export class TestChunk extends GameObjects.Container {
         );
         this._scene.matter.add.gameObject(
             _obstacle,
-            { isStatic: true, angle: 45 * (Math.PI / 180) },
+            { isStatic: true, restitution: 1, angle: 45 * (Math.PI / 180) },
             true
         );
         // _obstacle.setAngle(45);
