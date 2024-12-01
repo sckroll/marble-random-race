@@ -65,14 +65,7 @@ export class StartChunk extends GameObjects.Container {
             common.wallThickness,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(
-            _ceil,
-            { isStatic: true, restitution: 1 },
-            true
-        );
-        // this._scene.physics.add.existing(_ceil, true);
-        // this._scene.physics.add.collider(_ceil, this._participants);
-        // this.add(_ceil);
+        this._scene.matter.add.gameObject(_ceil, { isStatic: true }, true);
 
         const _leftWall = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2 -
@@ -83,14 +76,7 @@ export class StartChunk extends GameObjects.Container {
             startChunk.height,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(
-            _leftWall,
-            { isStatic: true, restitution: 1 },
-            true
-        );
-        // this._scene.physics.add.existing(_leftWall, true);
-        // this._scene.physics.add.collider(_leftWall, this._participants);
-        // this.add(_leftWall);
+        this._scene.matter.add.gameObject(_leftWall, { isStatic: true }, true);
 
         const _rightWall = this._scene.add.rectangle(
             this._scene.game.canvas.width / 2 +
@@ -101,13 +87,6 @@ export class StartChunk extends GameObjects.Container {
             startChunk.height,
             0xeeeeee
         );
-        this._scene.matter.add.gameObject(
-            _rightWall,
-            { isStatic: true, restitution: 1 },
-            true
-        );
-        // this._scene.physics.add.existing(_rightWall, true);
-        // this._scene.physics.add.collider(_rightWall, this._participants);
-        // this.add(_rightWall);
+        this._scene.matter.add.gameObject(_rightWall, { isStatic: true }, true);
     }
 }

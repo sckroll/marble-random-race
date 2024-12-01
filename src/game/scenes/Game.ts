@@ -14,6 +14,8 @@ export class GameScene extends Scene {
     /** 레이스가 시작되었는지 여부 */
     private _isRaceStarted: boolean;
 
+    testChunk: TestChunk;
+
     constructor() {
         super('game');
         this._participants = [];
@@ -29,7 +31,7 @@ export class GameScene extends Scene {
             participants: this._participants,
             y: 0,
         });
-        const testChunk = new TestChunk({
+        this.testChunk = new TestChunk({
             scene: this,
             participants: this._participants,
             y: startChunk.background.height,
@@ -37,7 +39,7 @@ export class GameScene extends Scene {
         const endChunk = new EndChunk({
             scene: this,
             participants: this._participants,
-            y: startChunk.background.height + testChunk.background.height,
+            y: startChunk.background.height + this.testChunk.background.height,
         });
 
         const _participants = this.registry.get('participants');
@@ -95,5 +97,7 @@ export class GameScene extends Scene {
         this._participants.forEach(participant =>
             participant.updateNamePosition()
         );
+
+        this.testChunk.update();
     }
 }

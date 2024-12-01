@@ -37,7 +37,8 @@ export class Marble extends GameObjects.Arc {
         scene.add.existing(this);
         scene.matter.add.gameObject(this, {
             circleRadius: MARBLE_RADIUS,
-            restitution: 1,
+            restitution: 0.8,
+            friction: 0.05,
             shape: 'circle',
         });
     }
