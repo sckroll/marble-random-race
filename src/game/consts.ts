@@ -9,3 +9,6 @@ export const MARBLE_COLORS = [
     0x0099ff, 0xff0099, 0xff3300, 0x00ff33, 0x3300ff, 0x33ff00, 0x0033ff,
     0xff0033,
 ];
+
+/** 타일 가로/세로 너비 */
+export const TILE_WIDTH = 48;

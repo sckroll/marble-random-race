@@ -1,9 +1,10 @@
 import { Scene } from 'phaser';
 import { Marble } from '../objects/Marble';
-import { MARBLE_COLORS, MARBLE_RADIUS } from '../consts';
+import { MARBLE_COLORS, MARBLE_RADIUS, TILE_WIDTH } from '../consts';
 import { StartChunk } from '../chunks/StartChunk';
 import { EndChunk } from '../chunks/EndChunk';
 import { TestChunk } from '../chunks/TestChunk';
+import { chunkConfig } from '../chunks/consts';
 
 /**
  * 메인 게임 화면 클래스
@@ -26,20 +27,22 @@ export class GameScene extends Scene {
         this.cameras.main.setBackgroundColor(0xeeeeee);
 
         // 시작 청크 생성
-        const startChunk = new StartChunk({
+        new StartChunk({
             scene: this,
-            participants: this._participants,
-            y: 0,
+            tiles: chunkConfig.startChunk.tiles,
+            offsetY: 0,
         });
         this.testChunk = new TestChunk({
             scene: this,
-            participants: this._participants,
-            y: startChunk.background.height,
+            tiles: chunkConfig.testChunk.tiles,
+            offsetY: chunkConfig.startChunk.tiles.length,
         });
-        const endChunk = new EndChunk({
+        new EndChunk({
             scene: this,
-            participants: this._participants,
-            y: startChunk.background.height + this.testChunk.background.height,
+            tiles: chunkConfig.endChunk.tiles,
+            offsetY:
+                chunkConfig.startChunk.tiles.length +
+                chunkConfig.testChunk.tiles.length,
         });
 
         const _participants = this.registry.get('participants');
@@ -60,11 +63,13 @@ export class GameScene extends Scene {
             const _marble = new Marble({
                 scene: this,
                 x:
-                    this.game.canvas.width / 2 -
+                    (chunkConfig.startChunk.tiles[0].length * TILE_WIDTH) / 2 -
                     _availableAreaWidth / 2 +
                     MARBLE_RADIUS +
                     (MARBLE_RADIUS * 2 + _gap) * index,
-                y: startChunk.background.y,
+                y:
+                    (chunkConfig.startChunk.tiles.length * TILE_WIDTH) / 2 +
+                    MARBLE_RADIUS / 2,
                 radius: MARBLE_RADIUS,
                 color: _color,
                 name,

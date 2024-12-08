@@ -6,6 +6,7 @@ function App() {
     /** 현재 페이지 */
     const [page, setPage] = useState<PageState>('main');
     /** 게임 참가자 이름 리스트 */
+    // const [participants, setParticipants] = useState<string[]>(['1', '2', '3', '4']);
     const [participants, setParticipants] = useState<string[]>([]);
 
     /**
