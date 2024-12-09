@@ -1,10 +1,8 @@
 import { Scene } from 'phaser';
 import { Marble } from '../objects/Marble';
 import { MARBLE_COLORS, MARBLE_RADIUS, TILE_WIDTH } from '../consts';
-import { StartChunk } from '../chunks/StartChunk';
-import { EndChunk } from '../chunks/EndChunk';
-import { TestChunk } from '../chunks/TestChunk';
 import { chunkConfig } from '../chunks/consts';
+import { Chunk } from '../chunks/Chunk';
 
 /**
  * 메인 게임 화면 클래스
@@ -12,14 +10,16 @@ import { chunkConfig } from '../chunks/consts';
 export class GameScene extends Scene {
     /** 참가자 구슬 리스트 */
     private _participants: Marble[];
+    /** `update()` 메소드에서 일괄적으로 호출할 메소드 리스트 */
+    private _updateFunctions: (() => void)[];
     /** 레이스가 시작되었는지 여부 */
     private _isRaceStarted: boolean;
 
-    testChunk: TestChunk;
-
     constructor() {
         super('game');
+
         this._participants = [];
+        this._updateFunctions = [];
         this._isRaceStarted = false;
     }
 
@@ -27,22 +27,25 @@ export class GameScene extends Scene {
         this.cameras.main.setBackgroundColor(0xeeeeee);
 
         // 시작 청크 생성
-        new StartChunk({
+        new Chunk({
             scene: this,
             tiles: chunkConfig.startChunk.tiles,
             offsetY: 0,
+            updateFunctions: this._updateFunctions,
         });
-        this.testChunk = new TestChunk({
+        new Chunk({
             scene: this,
             tiles: chunkConfig.testChunk.tiles,
             offsetY: chunkConfig.startChunk.tiles.length,
+            updateFunctions: this._updateFunctions,
         });
-        new EndChunk({
+        new Chunk({
             scene: this,
             tiles: chunkConfig.endChunk.tiles,
             offsetY:
                 chunkConfig.startChunk.tiles.length +
                 chunkConfig.testChunk.tiles.length,
+            updateFunctions: this._updateFunctions,
         });
 
         const _participants = this.registry.get('participants');
@@ -103,6 +106,6 @@ export class GameScene extends Scene {
             participant.updateNamePosition()
         );
 
-        this.testChunk.update();
+        this._updateFunctions.forEach(updateFunction => updateFunction());
     }
 }

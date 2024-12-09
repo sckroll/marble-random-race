@@ -1,6 +1,7 @@
 import { GameObjects } from 'phaser';
 import { Wall } from '../objects/Wall';
 import { TILE_WIDTH } from '../consts';
+import { DynamicObstacle } from '../objects/DynamicObstacle';
 
 /**
  * 청크 공통 클래스
@@ -11,16 +12,19 @@ export class Chunk extends GameObjects.Container {
     /** 청크의 타일 배열 */
     protected tiles: number[][];
 
-    constructor({ scene, tiles, offsetY }: ChunkProps) {
+    updateFunctions: (() => void)[];
+
+    constructor({ scene, tiles, offsetY, updateFunctions }: ChunkProps) {
         super(scene);
         scene.add.existing(this);
 
         this.scene = scene;
         this.tiles = tiles;
         this.offsetY = offsetY;
+        this.updateFunctions = updateFunctions;
 
         this._renderBackground();
-        this._renderWalls();
+        this._renderTiles();
     }
 
     /**
@@ -39,9 +43,9 @@ export class Chunk extends GameObjects.Container {
     }
 
     /**
-     * 청크의 벽을 렌더링하는 메소드
+     * 청크의 타일을 렌더링하는 메소드
      */
-    private _renderWalls() {
+    private _renderTiles() {
         this.tiles.forEach((row, rowIndex) => {
             row.forEach((col, colIndex) => {
                 if (col === 1) {
@@ -51,6 +55,51 @@ export class Chunk extends GameObjects.Container {
                         tileY: rowIndex + this.offsetY,
                         color: 0xeeeeee,
                     });
+                } else if (col === 2) {
+                    const _dynamicObstacle = new DynamicObstacle({
+                        scene: this.scene,
+                        tileX: colIndex,
+                        tileY: rowIndex + this.offsetY,
+                        color: 0xeeeeee,
+                        width: 1,
+                        height: 1,
+                        initialDegree: 45,
+                        deltaDegree: 1.5,
+                        clockwise: true,
+                    });
+                    this.updateFunctions.push(
+                        _dynamicObstacle.update.bind(_dynamicObstacle)
+                    );
+                } else if (col === 3) {
+                    const _dynamicObstacle = new DynamicObstacle({
+                        scene: this.scene,
+                        tileX: colIndex,
+                        tileY: rowIndex + this.offsetY,
+                        color: 0xeeeeee,
+                        width: 1,
+                        height: 1,
+                        initialDegree: 45,
+                        deltaDegree: 1.5,
+                        clockwise: false,
+                    });
+                    this.updateFunctions.push(
+                        _dynamicObstacle.update.bind(_dynamicObstacle)
+                    );
+                } else if (col === 4) {
+                    const _dynamicObstacle = new DynamicObstacle({
+                        scene: this.scene,
+                        tileX: colIndex,
+                        tileY: rowIndex + this.offsetY,
+                        color: 0xeeeeee,
+                        width: 5,
+                        height: 1,
+                        initialDegree: 0,
+                        deltaDegree: 3,
+                        clockwise: true,
+                    });
+                    this.updateFunctions.push(
+                        _dynamicObstacle.update.bind(_dynamicObstacle)
+                    );
                 }
             });
         });
