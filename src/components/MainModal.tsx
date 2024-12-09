@@ -8,8 +8,9 @@ const cx = classNames.bind(styles);
 /** 메인 화면 모달 컴포넌트 props 타입 */
 type MainModalProps = {
     participants: string[];
-    onAddParticipant: (e: FormEvent<HTMLFormElement>) => void;
     onStart: () => void;
+    onAddParticipant: (e: FormEvent<HTMLFormElement>) => void;
+    onRemoveParticipant: (participant: string) => void;
 };
 
 /**
@@ -19,12 +20,18 @@ export const MainModal = ({
     participants,
     onStart,
     onAddParticipant,
+    onRemoveParticipant
 }: MainModalProps) => {
     return (
         <div className={cx('overlay')}>
             <section className={cx('modal')}>
                 <div className={cx('participantList')}>
-                    {participants.join(', ')}
+                    {participants.map(participant => (
+                        <div className={cx('participantBadge')} key={participant}>
+                            {participant}
+                            <button onClick={() => onRemoveParticipant(participant)}>X</button>
+                        </div>
+                    ))}
                 </div>
                 <form onSubmit={onAddParticipant}>
                     <label>
